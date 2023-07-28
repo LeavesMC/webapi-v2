@@ -3,5 +3,5 @@
 /vercel
 .env
 package-lock.json
-yarn.lock
 .vercel
+/.env.local
