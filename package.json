@@ -1,0 +1,16 @@
+{
+  "name": "leavesmc-api-v2-dev",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vercel dev"
+  },
+  "dependencies": {
+    "vclight": "^1.1.1",
+    "vercel": "^31.1.1",
+    "vclight-router": "^1.1.6"
+  },
+  "devDependencies": {
+    "@vercel/node": "^2.15.6"
+  }
+}
