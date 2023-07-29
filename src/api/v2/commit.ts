@@ -11,6 +11,7 @@ router.on("/v2/commit", async function(request, response) {
         response.contentType = "application/json";
         return;
     }
+    console.log(request.body.headers);
     console.log(JSON.stringify(request));
     const record = client
         .db("metadata")
