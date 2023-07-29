@@ -11,20 +11,9 @@ router.on("/v2/commit", async function(request, response) {
         response.contentType = "application/json";
         return;
     }
-    console.log(request.body.headers);
+    // console.log(r);
     console.log(JSON.stringify(request));
-    const record = client
-        .db("metadata")
-        .collection("projects")
-        .find({});
-    const result:any[]=[];
-    for await (const doc of record) {
-        result.push({
-            id: doc.id,
-            name: doc.name
-        });
-    }
-    response.response = JSON.stringify(result);
+    response.response = JSON.stringify(request.body.headers);
     response.contentType = "application/json";
     await client.close();
 })
