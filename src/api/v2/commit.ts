@@ -4,19 +4,19 @@ import mongodb from "../../mangodb";
 router.on("/v2/commit", async function(request, response) {
     const client = mongodb.client;
     await client.connect();
-    if(request.method !== "POST"){
-        response.response=JSON.stringify({
-            error:"request method must be post"
+    if (request.method !== "POST") {
+        response.response = JSON.stringify({
+            error: "request method must be post"
         });
         response.contentType = "application/json";
         return;
     }
-    console.log(request.body.headers);
+    console.log(JSON.stringify(request.body));
     console.log(JSON.stringify(request));
-    response.response = JSON.stringify({AAA:"AAA"});
+    response.response = JSON.stringify({ AAA: "AAA" });
     response.contentType = "application/json";
     await client.close();
-})
+});
 
 //{
 //     "project_id": "$project_id",
