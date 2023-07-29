@@ -2,5 +2,5 @@ import VCLightRouter from "vclight-router";
 
 const router = new VCLightRouter();
 export default router;
-import "./routers/index"
-import "./routers/favicon"
+import "./api/v2/projects"
+import "./api/v2/commit"

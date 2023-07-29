@@ -6,6 +6,7 @@
     "serve": "vercel dev"
   },
   "dependencies": {
+    "mongodb": "^5.7.0",
     "vclight": "^1.1.1",
     "vclight-router": "^1.1.6",
     "vercel": "^31.1.1"
