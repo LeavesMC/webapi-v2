@@ -12,6 +12,7 @@ router.on("/v2/commitBuild", async function(request, response) {
         return;
     }
     const token = request.headers.authorization;
+    console.log(token);
     if(!await verifyToken(token)){
         response.status=401;
         await client.close();
@@ -22,7 +23,7 @@ router.on("/v2/commitBuild", async function(request, response) {
     await client.close();
 });
 
-async function verifyToken(token) {
+async function verifyToken(token: string) {
     try {
         jwt.verify(token, Env.API_PUBLIC_KEY, { algorithms: ["RS256"] });
         return true;
