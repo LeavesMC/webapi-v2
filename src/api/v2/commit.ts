@@ -11,7 +11,7 @@ router.on("/v2/commit", async function(request, response) {
         response.contentType = "application/json";
         return;
     }
-    console.log(JSON.stringify(request.body.headers));
+    console.log(JSON.stringify(request.headers));
     console.log(JSON.stringify(request));
     response.response = JSON.stringify({ AAA: "AAA" });
     response.contentType = "application/json";
