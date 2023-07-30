@@ -12,22 +12,24 @@ router.on("/v2/commitBuild", async function(request, response) {
         return;
     }
     const token = request.headers.authorization;
-    jwt.verify(token, Env.API_PUBLIC_KEY,
-        { algorithms: ["RS256"] },
-        async (err) => {
-            if (err) {
-                response.status=401;
-                await client.close();
-                return;
-            } else {
-                response.status=200;
-                response.response = JSON.stringify({ AAA: "AAA" });
-                response.contentType = "application/json";
-            }
-        });
+    if(!await verifyToken(token)){
+        response.status=401;
+        await client.close();
+        return;
+    }
+    response.status=200;
+    response.response="AAA";
     await client.close();
 });
 
+async function verifyToken(token) {
+    try {
+        jwt.verify(token, Env.API_PUBLIC_KEY, { algorithms: ["RS256"] });
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
 //{
 //     "project_id": "$project_id",
 //     "project_name": "$project_name",
