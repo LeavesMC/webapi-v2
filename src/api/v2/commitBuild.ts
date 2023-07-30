@@ -3,7 +3,7 @@ import router from "../../router";
 import mongodb from "../../mangodb";
 import Env from "../../environmentVariables";
 
-router.on("/v2/commit", async function(request, response) {
+router.on("/v2/commitBuild", async function(request, response) {
     const client = mongodb.client;
     await client.connect();
     if (request.method !== "POST") {
