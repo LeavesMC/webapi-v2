@@ -14,6 +14,7 @@ router.on("/v2/commitBuild", async function(request, response) {
     const token:string = request.headers.authorization;
     console.log(request.headers.authorization);
     console.log(request.headers["authorization"]);
+    console.log(request.headers);
     if(!await verifyToken(token)){
         response.status=401;
         await client.close();
