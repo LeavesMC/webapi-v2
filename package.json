@@ -6,6 +6,8 @@
     "serve": "vercel dev"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
     "vclight": "^1.1.1",
     "vclight-router": "^1.1.7",

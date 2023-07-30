@@ -1,9 +1,8 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-
-const MONGODB_URI:string = process.env["MONGODB_URI"];
+import Env from "./environmentVariables";
 
 class MongoDB {
-    public readonly client:MongoClient = new MongoClient(MONGODB_URI, {
+    public readonly client:MongoClient = new MongoClient(Env.MONGODB_URI, {
         serverApi: {
             version: ServerApiVersion.v1,
             strict: true,

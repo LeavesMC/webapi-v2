@@ -1,20 +1,30 @@
+import jwt = require("jsonwebtoken");
 import router from "../../router";
 import mongodb from "../../mangodb";
+import Env from "../../environmentVariables";
 
 router.on("/v2/commit", async function(request, response) {
     const client = mongodb.client;
     await client.connect();
     if (request.method !== "POST") {
-        response.response = JSON.stringify({
-            error: "request method must be post"
-        });
-        response.contentType = "application/json";
+        response.status=400;
+        await client.close();
         return;
     }
-    console.log(JSON.stringify(request.headers));
-    console.log(JSON.stringify(request));
-    response.response = JSON.stringify({ AAA: "AAA" });
-    response.contentType = "application/json";
+    const token = request.headers.authorization;
+    jwt.verify(token, Env.API_PUBLIC_KEY,
+        { algorithms: ["RS256"] },
+        async (err) => {
+            if (err) {
+                response.status=401;
+                await client.close();
+                return;
+            } else {
+                response.status=200;
+                response.response = JSON.stringify({ AAA: "AAA" });
+                response.contentType = "application/json";
+            }
+        });
     await client.close();
 });
 
