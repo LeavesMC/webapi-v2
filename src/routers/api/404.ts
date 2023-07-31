@@ -1,4 +1,4 @@
-import router from "../../router";
+import router from "../router";
 
 router.on("/404/", async function(data, response) {
     response.contentType = "application/json";
