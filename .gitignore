@@ -131,3 +131,11 @@ dist
 
 .vercel
 .env*.local
+
+# Lock file
+/package-lock.json
+/yarn.lock
+/pnpm-lock.yaml
+
+# Idea project
+.idea

@@ -10,10 +10,11 @@
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
     "vclight": "^1.1.1",
-    "vclight-router": "^1.1.7",
-    "vercel": "^31.1.1"
+    "vclight-router": "^1.1.7"
   },
   "devDependencies": {
-    "@vercel/node": "^2.15.6"
+    "vercel": "^31.2.0",
+    "@vercel/node": "^2.15.6",
+    "content-type": "^1.0.5"
   }
 }

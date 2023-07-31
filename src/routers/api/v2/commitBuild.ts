@@ -1,7 +1,7 @@
 import jwt = require("jsonwebtoken");
 import router from "../../router";
-import mongodb from "../../mangodb";
-import Env from "../../environmentVariables";
+import mongodb from "../../../utils/mango";
+import Env from "../../../utils/environmentVariables";
 
 router.on("/v2/commitBuild", async function(request, response) {
     const client = mongodb.client;

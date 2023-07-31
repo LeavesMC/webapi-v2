@@ -1,5 +1,5 @@
 import VCLight from "vclight";
-import router from "./router";
+import router from "./routers/router";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
 module.exports = async function(request: VercelRequest, response: VercelResponse) {

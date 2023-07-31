@@ -1,5 +1,5 @@
 import router from "../../router";
-import mongodb from "../../mangodb";
+import mongodb from "../../../utils/mango";
 
 router.on("/v2/projects", async function(request, response) {
     const client = mongodb.client;
