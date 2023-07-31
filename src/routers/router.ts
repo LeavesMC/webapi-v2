@@ -10,8 +10,10 @@ export default router;
 //common routers
 import "./common/index";
 import "./common/favicon";
+import "./common/404";
 
 //api v2 routers
-import "./api/v2/404";
+import "./api/v2/api"
+import "./api/v2/docs"
 import "./api/v2/projects";
 import "./api/v2/commit/build";
