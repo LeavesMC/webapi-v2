@@ -1,9 +1,9 @@
 import jwt = require("jsonwebtoken");
-import router from "../../router";
-import mongodb from "../../../utils/mango";
-import Env from "../../../utils/environmentVariables";
+import router from "../../../router";
+import mongodb from "../../../../utils/mango";
+import Env from "../../../../utils/env";
 
-router.on("/v2/commitBuild", async function(request, response) {
+router.on("/v2/commit/build", async function(request, response) {
     const client = mongodb.client;
     await client.connect();
     if (request.method !== "POST") {

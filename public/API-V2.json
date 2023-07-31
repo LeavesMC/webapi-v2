@@ -1,0 +1,115 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "LeavesMC API",
+    "version": "2.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Query",
+      "description": "查询数据库中的数据"
+    },
+    {
+      "name": "Commit",
+      "description": "提交数据到数据库"
+    }
+  ],
+  "paths": {
+    "/v2/projects": {
+      "get": {
+        "summary": "获取项目列表",
+        "tags": ["Query"],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "project",
+                    "name": "projectName"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/commit/build": {
+      "post": {
+        "summary": "提交Build信息到数据库",
+        "tags": ["Commit"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "channel": {
+                    "type": "string"
+                  },
+                  "changes": {
+                    "type": "string"
+                  },
+                  "jar_name": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string"
+                  }
+                },
+                "required": true
+              },
+              "example": {
+                "project_id": "leaves",
+                "version": "1.20.1",
+                "channel": "default",
+                "changes": "changes",
+                "jar_name": "leaves-1.20.1.jar",
+                "sha256": "sha256"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提交成功"
+          },
+          "400": {
+            "description": "请求格式错误"
+          },
+          "401": {
+            "description": "未授权"
+          }
+        }
+      }
+    }
+  }
+}

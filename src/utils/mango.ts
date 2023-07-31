@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import Env from "./environmentVariables";
+import Env from "./env";
 
 class MongoDB {
     public readonly client:MongoClient = new MongoClient(Env.MONGODB_URI, {
