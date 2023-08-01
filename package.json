@@ -13,7 +13,7 @@
     "vclight-router": "^1.1.7"
   },
   "devDependencies": {
-    "vercel": "31.1.1",
-    "@vercel/node": "^2.15.6"
+    "@vercel/node": "^2.15.6",
+    "vercel": "^31.2.1"
   }
 }

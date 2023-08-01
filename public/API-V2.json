@@ -7,6 +7,9 @@
   "servers": [
     {
       "url": "https://dev.api.leavesmc.xor7.cn"
+    },
+    {
+      "url": "http://localhost:3000"
     }
   ],
   "tags": [
@@ -19,11 +22,22 @@
       "description": "提交数据到数据库"
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authentication"
+      }
+    }
+  },
   "paths": {
     "/v2/projects": {
       "get": {
         "summary": "获取项目列表",
-        "tags": ["Query"],
+        "tags": [
+          "Query"
+        ],
         "responses": {
           "200": {
             "description": "成功",
@@ -55,10 +69,77 @@
         }
       }
     },
+    "/v2/projects/{project}": {
+      "get": {
+        "summary": "获取指定项目信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version_groups": {
+                        "type": "array"
+                      },
+                      "versions": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version_groups": [
+                    "1.20",
+                    "1.19"
+                  ],
+                  "versions": [
+                    "1.20.1",
+                    "1.20",
+                    "1.19.4"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/commit/build": {
       "post": {
-        "summary": "提交Build信息到数据库",
-        "tags": ["Commit"],
+        "summary": "提交一个新Build到数据库",
+        "tags": [
+          "Commit"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -83,6 +164,9 @@
                   },
                   "sha256": {
                     "type": "string"
+                  },
+                  "tag": {
+                    "type": "string"
                   }
                 },
                 "required": true
@@ -93,7 +177,8 @@
                 "channel": "default",
                 "changes": "changes",
                 "jar_name": "leaves-1.20.1.jar",
-                "sha256": "sha256"
+                "sha256": "sha256",
+                "tag": "1.20.1-1a2b3c4"
               }
             }
           }
