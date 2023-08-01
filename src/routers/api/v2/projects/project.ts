@@ -10,8 +10,6 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function (request, response) {
         return;
     }
     const projectData = PROJECTS.get(projectName);
-    response.status = 200;
-    response.contentType = "application/json";
     const client = mongodb.client;
     await client.connect();
     const versionGroups = (await client
@@ -46,6 +44,12 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function (request, response) {
     const versions = Array
         .from(versionSet)
         .sort((a, b) => (a < b) ? 1 : -1);
-    console.log(versionGroups);
-    console.log(versions);
+    response.status = 200;
+    response.contentType = "application/json";
+    response.response=JSON.stringify({
+        project_id: projectData.project_id,
+        project_name: projectName,
+        version_groups: versionGroups,
+        versions: versions
+    });
 })
