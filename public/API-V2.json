@@ -48,6 +48,9 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
                       "id": {
                         "type": "string"
                       },
@@ -95,6 +98,9 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
                       "project_id": {
                         "type": "string"
                       },
@@ -111,6 +117,7 @@
                   }
                 },
                 "example": {
+                  "code": 200,
                   "project_id": "leaves",
                   "project_name": "Leaves",
                   "version_groups": [

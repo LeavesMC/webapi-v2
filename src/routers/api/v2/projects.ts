@@ -1,6 +1,4 @@
 import router from "../../router";
-import mongo from "../../../utils/mongo";
-import restError from "../../../utils/restError";
 import PROJECTS from "../../../utils/projects";
 
 router.on("/v2/projects", async function(request, response) {
@@ -13,8 +11,5 @@ router.on("/v2/projects", async function(request, response) {
             repo: value.repo
         });
     })
-    response.response = {
-        code: 200,
-        data: result
-    };
+    response.response = result;
 });
