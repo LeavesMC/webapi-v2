@@ -11,6 +11,6 @@ class MongoDB {
     });
 }
 
-const mongodb: MongoDB = new MongoDB();
+const mongo: MongoDB = new MongoDB();
 
-export default mongodb;
+export default mongo;
