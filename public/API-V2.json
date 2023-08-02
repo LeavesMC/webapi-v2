@@ -48,8 +48,8 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "code": {
-                        "type": "integer"
+                      "repo": {
+                        "type": "string"
                       },
                       "id": {
                         "type": "string"
@@ -62,6 +62,7 @@
                 },
                 "example": [
                   {
+                    "repo": "Example/projectName",
                     "id": "project",
                     "name": "projectName"
                   }
