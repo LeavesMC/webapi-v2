@@ -19,7 +19,7 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
             .listCollections()
             .toArray())
             .map(collection => collection.name)
-            .sort((a, b) => (a < b) ? 1 : -1);
+            .sort();
         const versionSet: Set<string> = new Set();
         for (const versionGroup of versionGroups) {
             ((await client
@@ -45,7 +45,7 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
         }
         const versions = Array
             .from(versionSet)
-            .sort((a, b) => (a < b) ? 1 : -1);
+            .sort();
         response.status = 200;
         response.contentType = "application/json";
         response.response = {
