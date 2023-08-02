@@ -5,9 +5,6 @@ import restError from "../../../../utils/restError";
 
 router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
     response.contentType = "application/json";
-    if (request.method != "POST") {
-        return restError.$400(response);
-    }
     try {
         const projectName = request.url.split("/")[3];
         if (!PROJECTS.has(projectName)) {
@@ -53,12 +50,11 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
         response.contentType = "application/json";
         response.response = {
             code: 200,
-            data: {
-                project_id: projectData.project_id,
-                project_name: projectName,
-                version_groups: versionGroups,
-                versions: versions
-            }
+            project_id: projectData.project_id,
+            project_name: projectName,
+            version_groups: versionGroups,
+            versions: versions
+
         };
     } catch (e) {
         console.error(e);
