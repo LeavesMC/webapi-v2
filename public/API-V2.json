@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://dev.api.leavesmc.xor7.cn"
+      "url": "https://api.leavesmc.top"
     },
     {
       "url": "http://localhost:3000"
