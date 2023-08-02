@@ -133,6 +133,9 @@
         }
       }
     },
+    "/v2/projects/{project}/versions/{version}": {
+
+    },
     "/v2/commit/build": {
       "post": {
         "summary": "提交一个新Build到数据库",
