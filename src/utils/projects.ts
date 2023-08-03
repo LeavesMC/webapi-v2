@@ -7,7 +7,7 @@ PROJECTS.set("leaves", {
 
 PROJECTS.set("lumina", {
     name: "Lumina",
-    repo: "LeavesMC/Leaves"
+    repo: "LeavesMC/Lumina"
 });
 
 export default PROJECTS;
