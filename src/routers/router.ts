@@ -8,6 +8,7 @@ const router = new VCLightRouter({
 export default router;
 
 //api v2 routers
+import "./api/v2/projects/versions/builds/build"
 import "./api/v2/projects/versions/builds"
 import "./api/v2/projects/versions/version"
 import "./api/v2/projects/project"
