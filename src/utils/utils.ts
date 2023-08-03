@@ -1,5 +1,5 @@
-import { MongoClient } from "mongodb";
-import { RequestContext } from "vclight-router";
+import {MongoClient} from "mongodb";
+import {RequestContext} from "vclight-router";
 import Env from "./env";
 import jwt = require("jsonwebtoken");
 
@@ -36,6 +36,31 @@ class Utils {
         }
     }
 
+    public static async getVersions(client: MongoClient, projectId: string, versionGroup: string) {
+        const versionSet: Set<string> = new Set();
+        ((await client
+            .db(projectId)
+            .collection(versionGroup)
+            .aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        version: {$addToSet: `$version`}
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        version: 1
+                    }
+                }
+            ]).toArray())[0].version)
+            .forEach((version: string) => {
+                versionSet.add(version);
+            });
+        return versionSet;
+    }
+
     public static async authentication(request: RequestContext) {
         const token: any = request.headers["authentication"];
         return !(!token.startsWith("Bearer ") && !await this.verifyToken(token.substring(7)));
@@ -44,7 +69,7 @@ class Utils {
 
     public static async verifyToken(token: string) {
         try {
-            jwt.verify(token, Env.API_PUBLIC_KEY, { algorithms: ["RS256"] });
+            jwt.verify(token, Env.API_PUBLIC_KEY, {algorithms: ["RS256"]});
             return true;
         } catch (err) {
             return false;

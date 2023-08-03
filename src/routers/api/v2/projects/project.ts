@@ -2,6 +2,7 @@ import router from "../../../router";
 import mongo from "../../../../utils/mongo";
 import PROJECTS from "../../../../utils/projects";
 import restError from "../../../../utils/restError";
+import Utils from "../../../../utils/utils";
 
 router.pattern(/^\/v2\/projects\/\S+$/, async function(request, response) {
     response.contentType = "application/json";
@@ -22,25 +23,9 @@ router.pattern(/^\/v2\/projects\/\S+$/, async function(request, response) {
             .sort();
         const versionSet: Set<string> = new Set();
         for (const versionGroup of versionGroups) {
-            ((await client
-                .db(projectId)
-                .collection(versionGroup)
-                .aggregate([
-                    {
-                        $group: {
-                            _id: null,
-                            version: { $addToSet: `$version` }
-                        }
-                    },
-                    {
-                        $project: {
-                            _id: 0,
-                            version: 1
-                        }
-                    }
-                ]).toArray())[0].version)
-                .forEach((version: string) => {
-                    versionSet.add(version);
+            (await Utils.getVersions(client,projectId,versionGroup))
+                .forEach(entry=>{
+                    versionSet.add(entry);
                 });
         }
         const versions = Array
