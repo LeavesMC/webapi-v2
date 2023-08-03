@@ -20,6 +20,10 @@
     {
       "name": "Commit",
       "description": "提交数据到数据库"
+    },
+    {
+      "name": "Download",
+      "description": "下载文件"
     }
   ],
   "components": {
@@ -679,6 +683,81 @@
                   ]
                 }
               }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/builds/{build}/downloads/{download}": {
+      "get": {
+        "summary": "获取指定项目的指定版本的指定Build的信息",
+        "tags": [
+          "Download"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "build",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "download",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "成功",
+            "content": {
+              "application/java-archive": {}
             }
           },
           "404": {
