@@ -35,7 +35,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function(request, r
             project_id: projectId,
             project_name: projectData.name,
             version: version,
-            builds: builds.sort()
+            builds: builds.sort((a,b)=>a-b)
         };
     } catch (e) {
         console.error(e);
