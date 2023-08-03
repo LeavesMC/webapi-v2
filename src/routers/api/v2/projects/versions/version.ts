@@ -28,7 +28,6 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function(request, r
             .forEach(entry=>{
                 builds.push(entry.build_id);
             });
-        builds.sort();
         response.status = 200;
         response.contentType = "application/json";
         response.response = {
@@ -36,7 +35,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function(request, r
             project_id: projectId,
             project_name: projectData.name,
             version: version,
-            builds: builds
+            builds: builds.sort()
         };
     } catch (e) {
         console.error(e);
