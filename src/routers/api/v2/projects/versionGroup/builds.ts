@@ -16,6 +16,31 @@ router.pattern(/^\/v2\/projects\/\S+\/version_group\/\S+$/, async function (requ
         const versionGroup = request.url.split("/")[5];
         const client = mongo.client;
         await client.connect();
+        const buildsInfo = [];
+        (await client
+            .db(projectId)
+            .collection(versionGroup)
+            .find({})
+            .toArray())
+            .forEach(entry => {
+                buildsInfo.push({
+                    build_id: entry.build_id,
+                    time: entry.time,
+                    channel: entry.channel,
+                    changes: entry.changes,
+                    promoted: false,
+                    downloads: {
+                        application: {
+                            name: entry.jar_name,
+                            sha256: entry.sha256
+                        },
+                        ghproxy: {
+                            name: entry.jar_name,
+                            sha256: entry.sha256
+                        }
+                    }
+                });
+            });
         response.status = 200;
         response.contentType = "application/json";
         response.response = {
@@ -24,8 +49,9 @@ router.pattern(/^\/v2\/projects\/\S+\/version_group\/\S+$/, async function (requ
             project_name: projectData.name,
             version_group: versionGroup,
             versions: Array
-                .from(await Utils.getVersions(client,projectId,versionGroup))
-                .sort()
+                .from(await Utils.getVersions(client, projectId, versionGroup))
+                .sort(),
+            builds: buildsInfo
         };
     } catch (e) {
         console.error(e);

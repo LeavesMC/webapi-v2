@@ -592,6 +592,123 @@
         }
       }
     },
+    "/v2/projects/{project}/version_group/{family}/builds": {
+      "get": {
+        "summary": "获取指定项目的指定版本组的所有Build的信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "family",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version_group": {
+                        "type": "string"
+                      },
+                      "versions": {
+                        "type": "array"
+                      },
+                      "builds": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version_group": "1.20",
+                  "versions": [
+                    "1.20.1",
+                    "1.20"
+                  ],
+                  "builds": [
+                    {
+                      "build": 1,
+                      "time": "2023-08-03T06:12:14.887Z",
+                      "channel": "default",
+                      "promoted": false,
+                      "changes": [
+                        {
+                          "commit": "hash",
+                          "summary": "string",
+                          "message": "string"
+                        }
+                      ],
+                      "downloads": {
+                        "application": {
+                          "name": "xxx.jar",
+                          "sha256": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/commit/build": {
       "post": {
         "summary": "提交一个新Build到数据库",
