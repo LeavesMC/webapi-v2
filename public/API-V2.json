@@ -75,7 +75,7 @@
     },
     "/v2/projects/{project}": {
       "get": {
-        "summary": "获取指定项目信息",
+        "summary": "获取指定项目的信息",
         "tags": [
           "Query"
         ],
@@ -137,12 +137,128 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v2/projects/{project}/versions/{version}": {
-
+      "get": {
+        "summary": "获取指定项目的指定版本的信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      },
+                      "builds": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version": "1.20",
+                  "builds": [
+                    1,
+                    2,
+                    3
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/v2/commit/build": {
       "post": {

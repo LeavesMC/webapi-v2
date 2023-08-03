@@ -3,19 +3,19 @@ import mongo from "../../../../utils/mongo";
 import PROJECTS from "../../../../utils/projects";
 import restError from "../../../../utils/restError";
 
-router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
+router.pattern(/^\/v2\/projects\/\S+$/, async function(request, response) {
     response.contentType = "application/json";
     try {
-        const projectName = request.url.split("/")[3];
-        if (!PROJECTS.has(projectName)) {
+        const projectId = request.url.split("/")[3];
+        if (!PROJECTS.has(projectId)) {
             return restError.$404(response);
 
         }
-        const projectData = PROJECTS.get(projectName);
+        const projectData = PROJECTS.get(projectId);
         const client = mongo.client;
         await client.connect();
         const versionGroups = (await client
-            .db(projectName)
+            .db(projectId)
             .listCollections()
             .toArray())
             .map(collection => collection.name)
@@ -23,7 +23,7 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
         const versionSet: Set<string> = new Set();
         for (const versionGroup of versionGroups) {
             ((await client
-                .db(projectName)
+                .db(projectId)
                 .collection(versionGroup)
                 .aggregate([
                     {
@@ -50,11 +50,10 @@ router.pattern(/^(?=\/v2\/projects\/)/, async function(request, response) {
         response.contentType = "application/json";
         response.response = {
             code: 200,
-            project_id: projectData.project_id,
-            project_name: projectName,
+            project_id: projectId,
+            project_name: projectData.name,
             version_groups: versionGroups,
             versions: versions
-
         };
     } catch (e) {
         console.error(e);
