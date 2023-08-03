@@ -29,6 +29,15 @@ router.on("/v2/commit/build", async function(request, response) {
             await client.close();
             return restError.$400(response);
         }
+        const changesArray = [];
+        changes.split(">>>").forEach(entry=>{
+            const split = entry.split("<<<");
+            changesArray.unshift({
+                commit: split[0],
+                summary: split[1],
+                message: split[1]+"\n"
+            });
+        });
         const buildId = await Utils.getLatestBuildId(client, projectId, version) + 1;
         const dbRes = await client
             .db(projectId)
@@ -37,7 +46,7 @@ router.on("/v2/commit/build", async function(request, response) {
                 build_id: buildId,
                 time: new Date().toISOString(),
                 channel: channel,
-                changes: changes,
+                changes: changesArray,
                 jar_name: jarName,
                 sha256: sha256,
                 version: version,
