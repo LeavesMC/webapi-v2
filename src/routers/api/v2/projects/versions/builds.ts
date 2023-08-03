@@ -27,7 +27,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds$/, async function (r
             }).toArray())
             .forEach(entry => {
                 buildsInfo.push({
-                    build_id: entry.build_id,
+                    build: entry.build_id,
                     time: entry.time,
                     channel: entry.channel,
                     changes: entry.changes,
