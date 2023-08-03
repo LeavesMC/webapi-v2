@@ -4,7 +4,7 @@ import PROJECTS from "../../../../../utils/projects";
 import restError from "../../../../../utils/restError";
 import Utils from "../../../../../utils/utils";
 
-router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function (request, response) {
+router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds$/, async function (request, response) {
     response.contentType = "application/json";
     try {
         const projectId = request.url.split("/")[3];
@@ -16,7 +16,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function (request, 
         const version = request.url.split("/")[5];
         const client = mongo.client;
         await client.connect();
-        const builds = [];
+        const buildsInfo = [];
         (await client
             .db(projectId)
             .collection(Utils.getVersionGroup(version))
@@ -26,7 +26,23 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function (request, 
                 }
             }).toArray())
             .forEach(entry => {
-                builds.push(entry.build_id);
+                buildsInfo.push({
+                    build_id: entry.build_id,
+                    time: entry.time,
+                    channel: entry.channel,
+                    changes: entry.changes,
+                    promoted: false,
+                    downloads: {
+                        application: {
+                            name: entry.jar_name,
+                            sha256: entry.sha256
+                        },
+                        ghproxy: {
+                            name: entry.jar_name,
+                            sha256: entry.sha256
+                        }
+                    }
+                });
             });
         response.status = 200;
         response.contentType = "application/json";
@@ -35,7 +51,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+$/, async function (request, 
             project_id: projectId,
             project_name: projectData.name,
             version: version,
-            builds: builds.sort((a, b) => a - b)
+            builds:buildsInfo.sort((a, b) => a.build_id - b.build_id)
         };
     } catch (e) {
         console.error(e);
