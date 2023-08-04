@@ -30,7 +30,7 @@ router.on("/v2/commit/build", async function(request, response) {
             return restError.$400(response);
         }
         const changesArray = [];
-        changes.split(">>>").forEach(entry=>{
+        changes.split(">>>").forEach((entry: string)=>{
             const split = entry.split("<<<");
             changesArray.unshift({
                 commit: split[0],

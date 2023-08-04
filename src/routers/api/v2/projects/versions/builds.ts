@@ -36,8 +36,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds$/, async function (r
                         application: {
                             name: entry.jar_name,
                             sha256: entry.sha256
-                        },
-                        ghproxy: {}
+                        }
                     }
                 });
             });
