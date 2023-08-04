@@ -5,7 +5,7 @@ class RestError {
         response.contentType = "application/json";
         response.status = 400;
         response.response = {
-            code: 401,
+            code: 400,
             msg: "Bad Request"
         };
     }
