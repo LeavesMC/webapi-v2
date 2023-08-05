@@ -31,6 +31,9 @@ router.on("/v2/commit/build", async function(request, response) {
         }
         const changesArray = [];
         changes.split(">>>").forEach((entry: string)=>{
+            if(entry === "") {
+                return;
+            }
             const split = entry.split("<<<");
             changesArray.unshift({
                 commit: split[0],
