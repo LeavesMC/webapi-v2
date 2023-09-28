@@ -15,15 +15,10 @@ class Utils {
             .collection(this.getVersionGroup(version))
             .aggregate([
                 {
-                    $match: {
-                        version: version
-                    }
-                },
-                {
                     $group: {
                         _id: null,
                         lastBuildId: {
-                            $max: `$build_id`
+                            $max: "$build_id"
                         }
                     }
                 }
