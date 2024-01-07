@@ -14,6 +14,7 @@ import "./api/v2/projects/versionGroup/builds"
 import "./api/v2/projects/versionGroup/family"
 import "./api/v2/projects/versions/builds/build"
 import "./api/v2/projects/versions/builds"
+import "./api/v2/projects/versions/differ"
 import "./api/v2/projects/versions/version"
 import "./api/v2/projects/project"
 import "./api/v2/projects";
