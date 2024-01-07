@@ -36,7 +36,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+\/downloads\/\S+
                 case "github":
                     break;
                 case "ghproxy":
-                    downloadUrl = `https://ghproxy.com/?q=${encodeURIComponent(downloadUrl)}`;
+                    downloadUrl = `https://mirror.ghproxy.com/?q=${encodeURIComponent(downloadUrl)}`;
                     break;
                 default:
                     return restError.$400(response);
