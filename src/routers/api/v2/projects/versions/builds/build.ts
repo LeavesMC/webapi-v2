@@ -45,6 +45,10 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+$/, async functi
                 application: {
                     name: dbResult.jar_name,
                     sha256: dbResult.sha256
+                },
+                ghproxy: {
+                    name: dbResult.jar_name,
+                    sha256: "ghproxy"
                 }
             }
         };
