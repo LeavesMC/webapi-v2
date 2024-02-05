@@ -12,21 +12,33 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+\/downloads\/\S+
         }
         const projectData = PROJECTS.get(projectId);
         const version = request.url.split("/")[5];
-        const build = parseInt(request.url.split("/")[7]);
+        const build = request.url.split("/")[7];
         const download = request.url.split("/")[9];
         const client = mongo.client;
         await client.connect();
-        const dbResult = (await client
-            .db(projectId)
-            .collection(Utils.getVersionGroup(version))
-            .find({
-                version: {
-                    $eq: version
-                },
-                build_id: {
-                    $eq: build
-                }
-            }).toArray())[0];
+        const dbResult = build === "latest" ?
+            (await client
+                .db(projectId)
+                .collection(Utils.getVersionGroup(version))
+                .find({
+                    version: {
+                        $eq: version
+                    }
+                })
+                .sort({build_id: -1})
+                .limit(1)
+                .toArray())[0]
+            : (await client
+                .db(projectId)
+                .collection(Utils.getVersionGroup(version))
+                .find({
+                    version: {
+                        $eq: version
+                    },
+                    build_id: {
+                        $eq: parseInt(build)
+                    }
+                }).toArray())[0];
         let downloadUrl = `https://github.com/${projectData.repo}/releases/download/${version}-${dbResult.tag}/${projectId}-${version}.jar`;
         if(download === "ghproxy") {
             downloadUrl = `https://mirror.ghproxy.com/?q=${encodeURIComponent(downloadUrl)}`;
