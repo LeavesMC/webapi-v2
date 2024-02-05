@@ -14,20 +14,32 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+$/, async functi
         }
         const projectData = PROJECTS.get(projectId);
         const version = request.url.split("/")[5];
-        const build = parseInt(request.url.split("/")[7]);
+        const build = request.url.split("/")[7];
         const client = mongo.client;
         await client.connect();
-        const dbResult = (await client
-            .db(projectId)
-            .collection(Utils.getVersionGroup(version))
-            .find({
-                version: {
-                    $eq: version
-                },
-                build_id: {
-                    $eq: build
-                }
-            }).toArray())[0];
+        const dbResult = build === "latest" ?
+            (await client
+                .db(projectId)
+                .collection(Utils.getVersionGroup(version))
+                .find({
+                    version: {
+                        $eq: version
+                    }
+                })
+                .sort({build_id: -1})
+                .limit(1)
+                .toArray())[0]
+            : (await client
+                .db(projectId)
+                .collection(Utils.getVersionGroup(version))
+                .find({
+                    version: {
+                        $eq: version
+                    },
+                    build_id: {
+                        $eq: parseInt(build)
+                    }
+                }).toArray())[0];
 
         response.status = 200;
         response.contentType = "application/json";
@@ -36,7 +48,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+$/, async functi
             project_id: projectId,
             project_name: projectData.name,
             version: version,
-            build: build,
+            build: parseInt(build),
             time: dbResult.time,
             channel: dbResult.channel,
             promoted: false,
