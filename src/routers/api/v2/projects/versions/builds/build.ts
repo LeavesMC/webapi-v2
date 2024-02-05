@@ -48,7 +48,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+$/, async functi
             project_id: projectId,
             project_name: projectData.name,
             version: version,
-            build: parseInt(build),
+            build: dbResult.build_id,
             time: dbResult.time,
             channel: dbResult.channel,
             promoted: false,
