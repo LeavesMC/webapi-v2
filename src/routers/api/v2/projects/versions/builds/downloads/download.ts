@@ -40,7 +40,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+\/downloads\/\S+
                     }
                 }).toArray())[0];
         let downloadUrl = `https://github.com/${projectData.repo}/releases/download/${version}-${dbResult.tag}/${projectId}-${version}.jar`;
-        if(download === "application") {
+        if(download === "cloud") {
             downloadUrl = `http://wulin.awacode.top:63333/software/${projectId}/${version}-${dbResult.tag}/${projectId}-${version}.jar`;
         }
         if(download === "ghproxy") {
