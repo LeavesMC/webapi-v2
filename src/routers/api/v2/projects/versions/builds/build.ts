@@ -51,20 +51,16 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+$/, async functi
             build: dbResult.build_id,
             time: dbResult.time,
             channel: dbResult.channel,
-            promoted: false, // dbResult.promoted // @TODO
+            promoted: false,
             changes: dbResult.changes,
             downloads: {
                 application: {
                     name: dbResult.jar_name,
                     sha256: dbResult.sha256
-                }, // Better mirror list
+                },
                 ghproxy: {
                     name: dbResult.jar_name,
-                    sha256: null
-                },
-                cloud: {
-                    name: dbResult.jar_name,
-                    sha256: null
+                    sha256: "ghproxy"
                 }
             }
         };
