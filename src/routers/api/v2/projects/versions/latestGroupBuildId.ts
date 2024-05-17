@@ -19,11 +19,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/latestGroupBuildId$/, async
             const latestInfo = (await client
                 .db(projectId)
                 .collection(Utils.getVersionGroup(version))
-                .find({
-                    version: {
-                        $eq: Utils.getVersionGroup(version)
-                    }
-                })
+                .find()
                 .sort({ build_id: -1 })
                 .limit(1)
                 .toArray())[0];
