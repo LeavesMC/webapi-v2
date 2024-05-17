@@ -21,7 +21,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/latestGroupBuildId$/, async
                 .collection(Utils.getVersionGroup(version))
                 .find({
                     version: {
-                        $eq: version
+                        $eq: Utils.getVersionGroup(version)
                     }
                 })
                 .sort({ build_id: -1 })
