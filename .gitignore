@@ -129,7 +129,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-.vercel
 .env*.local
 
 # Lock file
@@ -139,3 +138,7 @@ dist
 
 # Idea project
 .idea
+
+# Cache
+.vercel
+.netlify
