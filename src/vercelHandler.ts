@@ -1,4 +1,3 @@
-import "./routers/initRouter";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import app from "./app";
 
