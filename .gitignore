@@ -140,5 +140,5 @@ dist
 .idea
 
 # Cache
-.vercel
 .netlify
+.vercel
