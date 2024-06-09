@@ -3,17 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vercel dev"
+    "dev:vercel": "vercel dev",
+    "dev:netlify": "netlify functions:serve"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.2",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
-    "vclight": "^1.2.0",
-    "vclight-router": "^1.1.8"
+    "vclight": "^3.0.3",
+    "vclight-router": "^1.3.0"
   },
   "devDependencies": {
-    "@vercel/node": "^2.15.6",
-    "vercel": "^31.2.1"
+    "@vercel/node": "^3.1.6",
+    "@netlify/functions": "^2.7.0",
+    "vercel": "^34.2.4",
+    "netlify-cli": "^17.25.0"
   }
 }
