@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb";
-import {RequestContext} from "vclight-router";
+import {RequestContext} from "@vclight/router";
 import Env from "./env";
 import jwt = require("jsonwebtoken");
 

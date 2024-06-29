@@ -1,4 +1,4 @@
-import { ResponseContext } from "vclight-router";
+import { ResponseContext } from "@vclight/router";
 
 class RestError {
     $400(response: ResponseContext) {

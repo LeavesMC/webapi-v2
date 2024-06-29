@@ -1,4 +1,4 @@
-import VCLightRouter from "vclight-router";
+import VCLightRouter from "@vclight/router";
 
 const router = new VCLightRouter({
     buildInRouters: {
