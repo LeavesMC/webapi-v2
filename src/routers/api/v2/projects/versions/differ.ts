@@ -4,7 +4,7 @@ import PROJECTS from "../../../../../utils/projects";
 import restError from "../../../../../utils/restError";
 import Utils from "../../../../../utils/utils";
 
-router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/differ\/\S+$/, async function (request, response) {
+router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/differ\/\S+$/, async function(request, response) {
     response.contentType = "text/plain";
     try {
         const projectId = request.url.split("/")[3];
@@ -39,8 +39,7 @@ router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/differ\/\S+$/, async functi
         });
 
         if (targetBuildId === -1) {
-            response.status = 404;
-            return;
+            return restError.$404(response);
         }
         response.status = 200;
         response.contentType = "text/plain";
