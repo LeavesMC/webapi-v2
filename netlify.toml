@@ -1,2 +1,20 @@
 [functions]
-    included_files = ["public/**/*"]
+  included_files = ["public/**/*"]
+
+[[redirects]]
+  from = "/"
+  to = "/v2/docs"
+  status = 308
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "https://leaves-webapi-v2.vercel.app/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/afdian/*"
+  to = "https://leavesmc-afdian.netlify.app/:splat"
+  status = 200
+  force = true
