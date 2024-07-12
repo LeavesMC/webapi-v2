@@ -4,7 +4,7 @@ import PROJECTS from "../../../../../../utils/projects";
 import restError from "../../../../../../utils/restError";
 import Utils from "../../../../../../utils/utils";
 
-router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/?$/, async function (request, response) {
+router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/\/?$/, async function (request, response) {
     response.contentType = "application/json";
     try {
         const projectId = request.url.split("/")[3];
@@ -41,6 +41,17 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/?$/, async fu
                     }
                 }).toArray())[0];
 
+        console.log((await client
+            .db(projectId)
+            .collection(Utils.getVersionGroup(version))
+            .find({
+                version: {
+                    $eq: version
+                },
+                build_id: {
+                    $eq: parseInt(build)
+                }
+            }).toArray()))
         response.status = 200;
         response.contentType = "application/json";
         response.response = {
