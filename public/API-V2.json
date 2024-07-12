@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://api.leavesmc.top"
+      "url": "https://api.leavesmc.org"
     },
     {
       "url": "http://localhost:3000"
@@ -343,6 +343,136 @@
                     }
                   ]
                 }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/latestGroupBuildId": {
+      "get": {
+        "summary": "获取指定项目的指定版本组最新BuildID",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "text/plain": {
+                "example": "12"
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/differ/{verRef}": {
+      "get": {
+        "summary": "获取指定Ref(Git Hash)与指定项目的指定版本最新Build的ID差值",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verRef",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "text/plain": {
+                "example": "12"
               }
             }
           },
@@ -828,7 +958,14 @@
                     "type": "string"
                   }
                 },
-                "required": true
+                "required": [
+                  "project_id",
+                  "version",
+                  "channel",
+                  "changes",
+                  "jar_name",
+                  "sha256",
+                  "tag"]
               },
               "example": {
                 "project_id": "leaves",

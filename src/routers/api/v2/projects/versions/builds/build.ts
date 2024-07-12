@@ -4,7 +4,7 @@ import PROJECTS from "../../../../../../utils/projects";
 import restError from "../../../../../../utils/restError";
 import Utils from "../../../../../../utils/utils";
 
-router.pattern(/^\/v2\/projects\/\S+\/versions\/\S+\/builds\/\S+$/, async function (request, response) {
+router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/?$/, async function (request, response) {
     response.contentType = "application/json";
     try {
         const projectId = request.url.split("/")[3];
