@@ -11,7 +11,7 @@
     "@vclight/router": "^1.4.0",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
-    "vclight": "^3.1.1"
+    "vclight": "^3.1.2"
   },
   "devDependencies": {
     "@vercel/node": "^3.1.6",
