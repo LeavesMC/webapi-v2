@@ -5,6 +5,7 @@ import jwt = require("jsonwebtoken");
 
 class Utils {
     public static getVersionGroup(version: string) {
+        if (version === "1.21.4") return "1.21.4";
         const versionSplit = version.split(".");
         return `${versionSplit[0]}.${versionSplit[1]}`;
     }
