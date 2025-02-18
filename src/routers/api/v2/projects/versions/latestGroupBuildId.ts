@@ -18,7 +18,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/latestGroupBuildId\/?
         try {
             const latestInfo = (await client
                 .db(projectId)
-                .collection(Utils.getVersionGroup(version))
+                .collection(Utils.getVersionGroup(projectId, version))
                 .find()
                 .sort({ build_id: -1 })
                 .limit(1)

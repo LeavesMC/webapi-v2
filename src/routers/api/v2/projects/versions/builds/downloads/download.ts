@@ -19,7 +19,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/downl
         const dbResult = build === "latest" ?
             (await client
                 .db(projectId)
-                .collection(Utils.getVersionGroup(version))
+                .collection(Utils.getVersionGroup(projectId, version))
                 .find({
                     version: {
                         $eq: version
@@ -30,7 +30,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/downl
                 .toArray())[0]
             : (await client
                 .db(projectId)
-                .collection(Utils.getVersionGroup(version))
+                .collection(Utils.getVersionGroup(projectId, version))
                 .find({
                     version: {
                         $eq: version

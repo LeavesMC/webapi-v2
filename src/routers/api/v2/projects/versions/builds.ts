@@ -19,7 +19,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/?$/, async fu
         const buildsInfo = [];
         (await client
             .db(projectId)
-            .collection(Utils.getVersionGroup(version))
+            .collection(Utils.getVersionGroup(projectId, version))
             .find({
                 version: {
                     $eq: version

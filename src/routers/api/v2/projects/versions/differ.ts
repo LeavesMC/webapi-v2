@@ -17,7 +17,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/differ\/[^\/]+\/?$/, 
         await client.connect();
         const allData = (await client
             .db(projectId)
-            .collection(Utils.getVersionGroup(version))
+            .collection(Utils.getVersionGroup(projectId, version))
             .find({
                 version: {
                     $eq: version

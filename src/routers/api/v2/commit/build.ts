@@ -44,7 +44,7 @@ router.on("/v2/commit/build", async function(request, response) {
         const buildId = await Utils.getLatestBuildId(client, projectId, version) + 1;
         const dbRes = await client
             .db(projectId)
-            .collection(Utils.getVersionGroup(version))
+            .collection(Utils.getVersionGroup(projectId, version))
             .insertOne({
                 build_id: buildId,
                 time: new Date().toISOString(),

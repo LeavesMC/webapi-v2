@@ -1,19 +1,26 @@
-import {MongoClient} from "mongodb";
-import {RequestContext} from "@vclight/router";
+import { MongoClient } from "mongodb";
+import { RequestContext } from "@vclight/router";
 import Env from "./env";
 import jwt = require("jsonwebtoken");
+import { EXTRA_VERSION_GROUP } from "../config/versionGroup";
 
 class Utils {
-    public static getVersionGroup(version: string) {
-        if (version === "1.21.4") return "1.21.4";
-        const versionSplit = version.split(".");
-        return `${versionSplit[0]}.${versionSplit[1]}`;
+    public static getVersionGroup(projectId: string, version: string) {
+        let [major, minor, patch] = version.split(".").map(str => parseInt(str));
+        minor = minor || 0;
+        patch = patch || 0;
+        for (const versionGroup of EXTRA_VERSION_GROUP) {
+            if (versionGroup.validate(projectId, [major, minor, patch])) {
+                return versionGroup.getGroupName();
+            }
+        }
+        return `${major}.${minor}`;
     }
 
     public static async getLatestBuildId(client: MongoClient, projectId: string, version: string) {
         const aggregationResult = await client
             .db(projectId)
-            .collection(this.getVersionGroup(version))
+            .collection(this.getVersionGroup(projectId, version))
             .aggregate([
                 {
                     $group: {
@@ -41,7 +48,7 @@ class Utils {
                 {
                     $group: {
                         _id: null,
-                        version: {$addToSet: `$version`}
+                        version: { $addToSet: `$version` }
                     }
                 },
                 {
@@ -65,7 +72,7 @@ class Utils {
 
     public static async verifyToken(token: string) {
         try {
-            jwt.verify(token, Env.API_PUBLIC_KEY, {algorithms: ["RS256"]});
+            jwt.verify(token, Env.API_PUBLIC_KEY, { algorithms: ["RS256"] });
             return true;
         } catch (err) {
             return false;
