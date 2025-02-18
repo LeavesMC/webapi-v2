@@ -133,7 +133,6 @@ dist
 
 # Lock file
 /package-lock.json
-/yarn.lock
 /pnpm-lock.yaml
 
 # Idea project
