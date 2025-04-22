@@ -71,11 +71,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/?$/, 
                 }, // Better mirror list
                 ghproxy: {
                     name: dbResult.jar_name,
-                    sha256: null
-                },
-                cloud: {
-                    name: dbResult.jar_name,
-                    sha256: null
+                    sha256: dbResult.sha256
                 }
             }
         };
