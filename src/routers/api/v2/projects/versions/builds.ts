@@ -36,10 +36,6 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/?$/, async fu
                         application: {
                             name: entry.jar_name,
                             sha256: entry.sha256
-                        }, // Better mirror list
-                        ghproxy: {
-                            name: entry.jar_name,
-                            sha256: entry.sha256
                         }
                     }
                 });

@@ -33,10 +33,6 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/version_group\/[^\/]+\/?$/, async funct
                         application: {
                             name: entry.jar_name,
                             sha256: entry.sha256
-                        },
-                        ghproxy: {
-                            name: entry.jar_name,
-                            sha256: entry.sha256
                         }
                     }
                 });
