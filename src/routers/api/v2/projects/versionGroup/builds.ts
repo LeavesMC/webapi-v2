@@ -29,8 +29,12 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/version_group\/[^\/]+\/?$/, async funct
                     channel: entry.channel,
                     changes: entry.changes,
                     promoted: false,
-                    downloads: {
+                    downloads: { // Better mirror list
                         application: {
+                            name: entry.jar_name,
+                            sha256: entry.sha256
+                        },
+                        rainyun: {
                             name: entry.jar_name,
                             sha256: entry.sha256
                         }
