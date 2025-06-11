@@ -64,8 +64,12 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/?$/, 
             channel: dbResult.channel,
             promoted: false, // dbResult.promoted // @TODO
             changes: dbResult.changes,
-            downloads: {
+            downloads: { // Better mirror list
                 application: {
+                    name: dbResult.jar_name,
+                    sha256: dbResult.sha256
+                },
+                rainyun: {
                     name: dbResult.jar_name,
                     sha256: dbResult.sha256
                 }

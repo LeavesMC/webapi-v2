@@ -40,6 +40,9 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/downl
                     }
                 }).toArray())[0];
         let downloadUrl = `https://github.com/${projectData.repo}/releases/download/${version}-${dbResult.tag}/${projectId}-${version}.jar`;
+        if (download === "rainyun") {
+            downloadUrl = `https://${projectId}.cn-nb1.rains3.com/${version}-${dbResult.tag}/${projectId}-${version}.jar`;
+        }
         response.status = 302;
         response.redirect = true;
         response.contentType = "application/java-archive";
