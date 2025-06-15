@@ -5,17 +5,13 @@ export default async function triggerWebhook(
     repo: string,
     project: string,
     version: string,
-    build?: number,
-    commit?: string,
-    tag?: string
+    tag: string
 ): Promise<Response> {
     try {
         const payload = {
             repo: repo,
             project: project,
             version: version,
-            build: build,
-            commit: commit,
             tag: tag
         };
         const authHeader = createHash("md5")
@@ -35,11 +31,11 @@ export default async function triggerWebhook(
         if (response.status !== 202) {
             if (response.status === 403) {
                 await sleep(3000);
-                triggerWebhook(repo, project, version, build, commit, tag); // Retry
+                triggerWebhook(repo, project, version, tag); // Retry
             }
             if (response.status === 500) {
                 await sleep(5000);
-                triggerWebhook(repo, project, version, build, commit, tag); // Retry
+                triggerWebhook(repo, project, version, tag); // Retry
             }
             return;
         }
