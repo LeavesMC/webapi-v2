@@ -2,6 +2,7 @@ import router from "../../../router";
 import mongo from "../../../../utils/mongo";
 import Utils from "../../../../utils/utils";
 import restError from "../../../../utils/restError";
+import triggerWebhook from "../../../../utils/webhook";
 
 router.on("/v2/commit/build", async function(request, response) {
     response.contentType = "application/json";
@@ -55,6 +56,7 @@ router.on("/v2/commit/build", async function(request, response) {
                 version: version,
                 tag: tag.replace(`${version}-`, "")
             });
+        await triggerWebhook(`LeavesMC/${projectId}`, projectId, version, tag);
         response.status = 200;
         response.response = {
             code: 200,
