@@ -56,7 +56,7 @@ router.on("/v2/commit/build", async function(request, response) {
                 version: version,
                 tag: tag.replace(`${version}-`, "")
             });
-        const webhookRes = await triggerWebhook(`LeavesMC/${projectId}`, projectId, version, null, null, tag);
+        await triggerWebhook(`LeavesMC/${projectId}`, projectId, version, tag);
         response.status = 200;
         response.response = {
             code: 200,
