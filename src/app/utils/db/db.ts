@@ -16,6 +16,7 @@ export async function initDb(): Promise<Client> {
         });
         const e = _db.end;
         _db.end = async function() {
+            // noinspection ES6MissingAwait
             e.apply(_db);
             _db = undefined;
         };
