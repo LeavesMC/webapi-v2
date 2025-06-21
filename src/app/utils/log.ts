@@ -1,5 +1,5 @@
 import { getLogger } from "log4js";
-import env from "./env.ts";
+import env from "./env";
 
 const logger = getLogger();
 

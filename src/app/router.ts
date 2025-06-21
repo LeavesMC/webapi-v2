@@ -1,7 +1,7 @@
 import VCLightRouter from "@vclight/router";
 import RequestContext from "@vclight/router/dist/types/requestContext";
 import ResponseContext from "@vclight/router/dist/types/responseContext";
-import restUtils, { BadRequest, NotFound, Unauthorized } from "./utils/restUtils.ts";
+import restUtils, { BadRequest, NotFound, Unauthorized } from "./utils/restUtils";
 
 class MyRouter extends VCLightRouter {
     constructor() {

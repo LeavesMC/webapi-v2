@@ -1,7 +1,7 @@
-import { parseAndValidatePathSecs } from "../../../../utils/requestParser.ts";
-import restUtils from "../../../../utils/restUtils.ts";
-import { getProjectName, getProjectVersionGroups, getProjectVersions } from "../../../../utils/projectUtils.ts";
-import router from "../../../../router.ts";
+import { parseAndValidatePathSecs } from "../../../../utils/requestParser";
+import restUtils from "../../../../utils/restUtils";
+import { getProjectName, getProjectVersionGroups, getProjectVersions } from "../../../../utils/projectUtils";
+import router from "../../../../router";
 
 router.pattern(/^\/v2\/projects\/[^\/]+\/?$/, async (request, response) => {
     const secs = parseAndValidatePathSecs(request, 3);

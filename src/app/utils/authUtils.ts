@@ -1,7 +1,7 @@
 import jwt = require("jsonwebtoken");
 import RequestContext from "@vclight/router/dist/types/requestContext";
-import env from "./env.ts";
-import { BadRequest, Unauthorized } from "./restUtils.ts";
+import env from "./env";
+import { BadRequest, Unauthorized } from "./restUtils";
 
 export function authentication(request: RequestContext, audience: string) {
     const token = request.headers["authentication"];

@@ -1,12 +1,12 @@
-import router from "../../../../router.ts";
-import { getBodyParam } from "../../../../utils/requestParser.ts";
-import { authentication } from "../../../../utils/authUtils.ts";
-import { ChangeData } from "../../../../utils/dataTypes.ts";
-import { getVersionGroupId, getVersionIdOrCreate, getVersionsLatestBuildId } from "../../../../utils/versionUtils.ts";
-import { getVersionGroupVersions } from "../../../../utils/versionGroupUtils.ts";
-import restUtils, { BadRequest } from "../../../../utils/restUtils.ts";
-import { insertChangesData } from "../../../../utils/changesUtils.ts";
-import { db } from "../../../../utils/db/db.ts";
+import router from "../../../../router";
+import { getBodyParam } from "../../../../utils/requestParser";
+import { authentication } from "../../../../utils/authUtils";
+import { ChangeData } from "../../../../utils/dataTypes";
+import { getVersionGroupId, getVersionIdOrCreate, getVersionsLatestBuildId } from "../../../../utils/versionUtils";
+import { getVersionGroupVersions } from "../../../../utils/versionGroupUtils";
+import restUtils, { BadRequest } from "../../../../utils/restUtils";
+import { insertChangesData } from "../../../../utils/changesUtils";
+import { db } from "../../../../utils/db/db";
 
 router.on("/v2/commit/build", async (request, response) => {
     const projectId = getBodyParam(request, "project_id");

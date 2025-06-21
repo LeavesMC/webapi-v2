@@ -1,5 +1,5 @@
-import { NotFound } from "./restUtils.ts";
-import { db } from "./db/db.ts";
+import { NotFound } from "./restUtils";
+import { db } from "./db/db";
 
 export async function getProjectName(projectId: string): Promise<string> {
     const result = await db().query("select name from projects where id = $1", [projectId]);

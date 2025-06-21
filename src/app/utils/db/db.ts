@@ -1,7 +1,7 @@
 import { Client } from "pg";
-import { logger } from "../log.ts";
-import { migrateDB } from "./migration.ts";
-import env from "../env.ts";
+import { logger } from "../log";
+import { migrateDB } from "./migration";
+import env from "../env";
 import * as fs from "node:fs";
 
 const dbVersion = 1;

@@ -1,5 +1,5 @@
-import { NotFound } from "./restUtils.ts";
-import { db } from "./db/db.ts";
+import { NotFound } from "./restUtils";
+import { db } from "./db/db";
 
 export async function getVersionGroupId(projectId: string, versionGroupName: string): Promise<number> {
     const result = await db().query(

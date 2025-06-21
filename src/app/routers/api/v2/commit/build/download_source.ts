@@ -1,9 +1,9 @@
-import router from "../../../../../router.ts";
-import { getBodyParam } from "../../../../../utils/requestParser.ts";
-import { authentication } from "../../../../../utils/authUtils.ts";
-import { db } from "../../../../../utils/db/db.ts";
-import restUtils from "../../../../../utils/restUtils.ts";
-import { getDownloadSources } from "../../../../../utils/buildUtils.ts";
+import router from "../../../../../router";
+import { getBodyParam } from "../../../../../utils/requestParser";
+import { authentication } from "../../../../../utils/authUtils";
+import { db } from "../../../../../utils/db/db";
+import restUtils from "../../../../../utils/restUtils";
+import { getDownloadSources } from "../../../../../utils/buildUtils";
 
 router.on("/v2/commit/build/download_source", async (request, response) => {
     const projectId = getBodyParam(request, "project");

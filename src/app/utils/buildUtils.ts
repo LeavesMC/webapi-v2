@@ -1,8 +1,8 @@
-import { getChangesData } from "./changesUtils.ts";
-import { BuildData } from "./dataTypes.ts";
-import { NotFound } from "./restUtils.ts";
-import { getDownloadData } from "./downloadUtils.ts";
-import { db } from "./db/db.ts";
+import { getChangesData } from "./changesUtils";
+import { BuildData } from "./dataTypes";
+import { NotFound } from "./restUtils";
+import { getDownloadData } from "./downloadUtils";
+import { db } from "./db/db";
 
 export function toBuildData(row: any): BuildData {
     return {

@@ -13,12 +13,12 @@ const client = new Client({
 async function main() {
     await client.connect();
 
-    // 1. 插入项目（假设只有一个项目）
+    // 1. 插入项目
     const projectName = "Leaves";
     const projectRepo = "https://github.com/LeavesMC/leaves";
     const projectId = "leaves";
     {
-        const res = await client.query(
+        await client.query(
                 "INSERT INTO projects (id, name, repo) VALUES ($1, $2, $3) ON CONFLICT (id) DO NOTHING RETURNING id",
                 [projectId, projectName, projectRepo]
         );
@@ -50,14 +50,13 @@ async function main() {
 
         // 插入每个 version
         const versionNameToId = {};
-        for (const [versionName, versionBuilds] of Object.entries(versionMap)) {
+        for (const [versionName, _] of Object.entries(versionMap)) {
             const vRes = await client.query(
                     "INSERT INTO versions (name, project, version_group) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING id",
                     [versionName, projectId, vgId]
             );
-            const vId = vRes.rows[0]?.id ||
+            versionNameToId[versionName] = vRes.rows[0]?.id ||
                     (await client.query("SELECT id FROM versions WHERE name=$1 AND project=$2 AND version_group=$3", [versionName, projectId, vgId])).rows[0].id;
-            versionNameToId[versionName] = vId;
         }
 
         // 插入 changes，建立 commit->id 映射
@@ -106,5 +105,5 @@ async function main() {
 
 main().catch(e => {
     console.error(e);
-    client.end();
+    client.end().then();
 });

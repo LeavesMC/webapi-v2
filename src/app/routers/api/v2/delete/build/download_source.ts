@@ -1,9 +1,9 @@
-import router from "../../../../../router.ts";
-import { getBodyParam } from "../../../../../utils/requestParser.ts";
-import { authentication } from "../../../../../utils/authUtils.ts";
-import { getDownloadSources } from "../../../../../utils/buildUtils.ts";
-import restUtils, { NotFound } from "../../../../../utils/restUtils.ts";
-import { db } from "../../../../../utils/db/db.ts";
+import router from "../../../../../router";
+import { getBodyParam } from "../../../../../utils/requestParser";
+import { authentication } from "../../../../../utils/authUtils";
+import { getDownloadSources } from "../../../../../utils/buildUtils";
+import restUtils, { NotFound } from "../../../../../utils/restUtils";
+import { db } from "../../../../../utils/db/db";
 
 router.on("/v2/delete/build/download_source", async (request, response) => {
     const projectId = getBodyParam(request, "project");

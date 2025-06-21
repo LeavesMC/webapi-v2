@@ -1,7 +1,7 @@
-import { BuildData, DownloadData } from "./dataTypes.ts";
-import { BadRequest } from "./restUtils.ts";
-import { getProjectRepository } from "./projectUtils.ts";
-import { getVersionName } from "./versionUtils.ts";
+import { BuildData, DownloadData } from "./dataTypes";
+import { BadRequest } from "./restUtils";
+import { getProjectRepository } from "./projectUtils";
+import { getVersionName } from "./versionUtils";
 
 const downloadSources = {
     application: "application",

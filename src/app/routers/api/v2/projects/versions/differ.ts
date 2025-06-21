@@ -1,8 +1,8 @@
-import router from "../../../../../router.ts";
-import { parseAndValidatePathSecs } from "../../../../../utils/requestParser.ts";
-import { getVersionId, getVersionsLatestBuildId } from "../../../../../utils/versionUtils.ts";
-import { NotFound } from "../../../../../utils/restUtils.ts";
-import { db } from "../../../../../utils/db/db.ts";
+import router from "../../../../../router";
+import { parseAndValidatePathSecs } from "../../../../../utils/requestParser";
+import { getVersionId, getVersionsLatestBuildId } from "../../../../../utils/versionUtils";
+import { NotFound } from "../../../../../utils/restUtils";
+import { db } from "../../../../../utils/db/db";
 
 router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/differ\/[^\/]+\/?$/, async (request, response) => {
     const secs = parseAndValidatePathSecs(request, 7);

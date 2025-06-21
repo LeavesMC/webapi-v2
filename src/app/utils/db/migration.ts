@@ -1,6 +1,6 @@
 import { Client } from "pg";
 import { readFileSync } from "node:fs";
-import { logger } from "../log.ts";
+import { logger } from "../log";
 
 class Migration {
     from: number;

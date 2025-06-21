@@ -1,9 +1,9 @@
-import { NotFound } from "./restUtils.ts";
-import { BuildData } from "./dataTypes.ts";
-import { toBuildData } from "./buildUtils.ts";
-import { EXTRA_VERSION_GROUP } from "../config/extraVersionGroup.ts";
-import { getVersionGroupIdOrCreate } from "./versionGroupUtils.ts";
-import { db } from "./db/db.ts";
+import { NotFound } from "./restUtils";
+import { BuildData } from "./dataTypes";
+import { toBuildData } from "./buildUtils";
+import { EXTRA_VERSION_GROUP } from "../config/extraVersionGroup";
+import { getVersionGroupIdOrCreate } from "./versionGroupUtils";
+import { db } from "./db/db";
 
 export function generateVersionGroupName(projectId: string, version: string): string {
     let [major, minor, patch] = version.split(".").map(str => parseInt(str));

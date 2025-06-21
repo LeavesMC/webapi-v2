@@ -1,5 +1,5 @@
 import RequestContext from "@vclight/router/dist/types/requestContext";
-import { BadRequest } from "./restUtils.ts";
+import { BadRequest } from "./restUtils";
 
 /**
  * 解析请求 URL 的路径段，并校验其段数。

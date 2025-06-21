@@ -1,8 +1,8 @@
-import router from "../../../../../../router.ts";
-import { parseAndValidatePathSecs } from "../../../../../../utils/requestParser.ts";
-import { getBuildData, parseBuildId } from "../../../../../../utils/buildUtils.ts";
-import { getVersionId } from "../../../../../../utils/versionUtils.ts";
-import { getDownloadData } from "../../../../../../utils/downloadUtils.ts";
+import router from "../../../../../../router";
+import { parseAndValidatePathSecs } from "../../../../../../utils/requestParser";
+import { getBuildData, parseBuildId } from "../../../../../../utils/buildUtils";
+import { getVersionId } from "../../../../../../utils/versionUtils";
+import { getDownloadData } from "../../../../../../utils/downloadUtils";
 
 router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/downloads\/[^\/]+\/?$/, async (request, response) => {
     const secs = parseAndValidatePathSecs(request, 9);

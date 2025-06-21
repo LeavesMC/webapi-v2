@@ -1,10 +1,10 @@
-import router from "../../../../../router.ts";
-import { parseAndValidatePathSecs } from "../../../../../utils/requestParser.ts";
-import { getProjectName } from "../../../../../utils/projectUtils.ts";
-import { getVersionGroupId, getVersionGroupVersions } from "../../../../../utils/versionGroupUtils.ts";
-import { getVersionsBuildsData } from "../../../../../utils/versionUtils.ts";
-import restUtils from "../../../../../utils/restUtils.ts";
-import { toBuild } from "../../../../../utils/buildUtils.ts";
+import router from "../../../../../router";
+import { parseAndValidatePathSecs } from "../../../../../utils/requestParser";
+import { getProjectName } from "../../../../../utils/projectUtils";
+import { getVersionGroupId, getVersionGroupVersions } from "../../../../../utils/versionGroupUtils";
+import { getVersionsBuildsData } from "../../../../../utils/versionUtils";
+import restUtils from "../../../../../utils/restUtils";
+import { toBuild } from "../../../../../utils/buildUtils";
 
 router.pattern(/^\/v2\/projects\/[^\/]+\/version_group\/[^\/]+\/builds\/?$/, async (request, response) => {
     const secs = parseAndValidatePathSecs(request, 6);

@@ -1,4 +1,4 @@
-import { VersionGroupPattern } from "../utils/versionGroupPattern.ts";
+import { VersionGroupPattern } from "../utils/versionGroupPattern";
 
 export const EXTRA_VERSION_GROUP = VersionGroupPattern.fromArray([
     {

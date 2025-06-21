@@ -1,4 +1,4 @@
-import router from "../../router.ts";
+import router from "../../router";
 import { readFileSync } from "fs";
 
 router.on("/favicon.ico", async function(_, response) {

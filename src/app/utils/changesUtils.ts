@@ -1,5 +1,5 @@
-import { ChangeData } from "./dataTypes.ts";
-import { db } from "./db/db.ts";
+import { ChangeData } from "./dataTypes";
+import { db } from "./db/db";
 
 export async function getChangeData(changeId: number): Promise<ChangeData> {
     const result = await db().query(

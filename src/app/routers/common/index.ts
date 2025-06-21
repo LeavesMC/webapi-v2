@@ -1,4 +1,4 @@
-import router from "../../router.ts";
+import router from "../../router";
 
 router.on("/", async function(_, response) {
     response.redirect = true;
