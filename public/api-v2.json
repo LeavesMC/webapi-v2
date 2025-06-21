@@ -1026,7 +1026,7 @@
                   },
                   "tag": {
                     "type": "string"
-                  },
+                  }
                 },
                 "required": [
                   "download_source",
@@ -1083,7 +1083,7 @@
                   },
                   "tag": {
                     "type": "string"
-                  },
+                  }
                 },
                 "required": [
                   "download_source",
