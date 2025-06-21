@@ -1,0 +1,1116 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LeavesMC API",
+    "version": "2.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.leavesmc.org"
+    },
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Query",
+      "description": "查询数据库中的数据"
+    },
+    {
+      "name": "Download",
+      "description": "下载文件"
+    },
+    {
+      "name": "Commit",
+      "description": "提交数据到数据库"
+    },
+    {
+      "name": "Delete",
+      "description": "从数据库删除数据"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authentication"
+      }
+    }
+  },
+  "paths": {
+    "/v2/projects": {
+      "get": {
+        "summary": "获取项目列表",
+        "tags": [
+          "Query"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "repo": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "repo": "Example/projectName",
+                    "id": "project",
+                    "name": "projectName"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}": {
+      "get": {
+        "summary": "获取指定项目的信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version_groups": {
+                        "type": "array"
+                      },
+                      "versions": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version_groups": [
+                    "1.20",
+                    "1.19"
+                  ],
+                  "versions": [
+                    "1.20.1",
+                    "1.20",
+                    "1.19.4",
+                    "1.19.3",
+                    "1.19.2",
+                    "1.19.1",
+                    "1.19"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}": {
+      "get": {
+        "summary": "获取指定项目的指定版本的信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      },
+                      "builds": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version": "1.20",
+                  "builds": [
+                    1,
+                    2,
+                    3
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/builds": {
+      "get": {
+        "summary": "获取指定项目的指定版本的Build信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      },
+                      "builds": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version": "1.20",
+                  "builds": [
+                    {
+                      "build": 1,
+                      "time": "2023-08-03T06:12:14.887Z",
+                      "channel": "default",
+                      "promoted": false,
+                      "changes": [
+                        {
+                          "commit": "hash",
+                          "summary": "string",
+                          "message": "string"
+                        }
+                      ],
+                      "downloads": {
+                        "application": {
+                          "name": "xxx.jar",
+                          "sha256": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/latestGroupBuildId": {
+      "get": {
+        "summary": "获取指定项目的指定版本对应的版本组最新BuildID",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "text/plain": {
+                "example": "12"
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/differ/{verRef}": {
+      "get": {
+        "summary": "获取指定Ref(Git Hash)与指定项目的指定版本最新Build的ID差值",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verRef",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "text/plain": {
+                "example": "12"
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/builds/{build}": {
+      "get": {
+        "summary": "获取指定项目的指定版本的指定Build的信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "build",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      },
+                      "build": {
+                        "type": "integer"
+                      },
+                      "time": {
+                        "type": "string"
+                      },
+                      "channel": {
+                        "type": "string"
+                      },
+                      "promoted": {
+                        "type": "boolean"
+                      },
+                      "changes": {
+                        "type": "array"
+                      },
+                      "downloads": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version": "1.20",
+                  "build": 1,
+                  "time": "2023-08-03T06:12:14.887Z",
+                  "channel": "default",
+                  "promoted": false,
+                  "changes": [
+                    {
+                      "commit": "hash",
+                      "summary": "string",
+                      "message": "string"
+                    }
+                  ],
+                  "downloads": {
+                    "application": {
+                      "name": "xxx.jar",
+                      "sha256": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/version_group/{family}": {
+      "get": {
+        "summary": "获取指定项目的指定版本组的所有子版本",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "family",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version_group": {
+                        "type": "string"
+                      },
+                      "versions": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version_group": "1.20",
+                  "versions": [
+                    "1.20.1",
+                    "1.20"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/version_group/{family}/builds": {
+      "get": {
+        "summary": "获取指定项目的指定版本组的所有Build的信息",
+        "tags": [
+          "Query"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "family",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "project_id": {
+                        "type": "string"
+                      },
+                      "project_name": {
+                        "type": "string"
+                      },
+                      "version_group": {
+                        "type": "string"
+                      },
+                      "versions": {
+                        "type": "array"
+                      },
+                      "builds": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "project_id": "leaves",
+                  "project_name": "Leaves",
+                  "version_group": "1.20",
+                  "versions": [
+                    "1.20.1",
+                    "1.20"
+                  ],
+                  "builds": [
+                    {
+                      "build": 1,
+                      "time": "2023-08-03T06:12:14.887Z",
+                      "channel": "default",
+                      "promoted": false,
+                      "changes": [
+                        {
+                          "commit": "hash",
+                          "summary": "string",
+                          "message": "string"
+                        }
+                      ],
+                      "downloads": {
+                        "application": {
+                          "name": "xxx.jar",
+                          "sha256": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project}/versions/{version}/builds/{build}/downloads/{download}": {
+      "get": {
+        "summary": "获取指定项目的指定版本的指定Build的信息",
+        "tags": [
+          "Download"
+        ],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "build",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "download",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "成功",
+            "content": {
+              "application/java-archive": {}
+            }
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "integer"
+                      },
+                      "msg": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "msg": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/commit/build": {
+      "post": {
+        "summary": "提交一个新Build到数据库",
+        "tags": [
+          "Commit"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "channel": {
+                    "type": "string"
+                  },
+                  "changes": {
+                    "type": "string"
+                  },
+                  "jar_name": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string"
+                  },
+                  "tag": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "project_id",
+                  "version",
+                  "channel",
+                  "changes",
+                  "jar_name",
+                  "sha256",
+                  "tag"
+                ]
+              },
+              "example": {
+                "project_id": "leaves",
+                "version": "1.20.1",
+                "channel": "default",
+                "changes": "changes",
+                "jar_name": "leaves-1.20.1.jar",
+                "sha256": "sha256",
+                "tag": "1.20.1-1a2b3c4"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提交成功"
+          },
+          "400": {
+            "description": "请求格式错误"
+          },
+          "401": {
+            "description": "未授权"
+          }
+        }
+      }
+    },
+    "/v2/commit/build/download_source": {
+      "post": {
+        "summary": "提交一个Build的新下载源到数据库",
+        "tags": [
+          "Commit"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "download_source": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "project": {
+                    "type": "string"
+                  },
+                  "tag": {
+                    "type": "string"
+                  },
+                },
+                "required": [
+                  "download_source",
+                  "url",
+                  "project",
+                  "tag"
+                ]
+              },
+              "example": {
+                "download_source": "example",
+                "url": "https://example.com/downloads/leaves-1.20.1.jar",
+                "project": "leaves",
+                "tag": "1.20.1-1a2b3c4"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提交成功"
+          },
+          "400": {
+            "description": "请求格式错误"
+          },
+          "401": {
+            "description": "未授权"
+          }
+        }
+      }
+    },
+    "/v2/delete/build/download_source": {
+      "post": {
+        "summary": "从数据库删除一个Build的下载源",
+        "tags": [
+          "Delete"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "download_source": {
+                    "type": "string"
+                  },
+                  "project": {
+                    "type": "string"
+                  },
+                  "tag": {
+                    "type": "string"
+                  },
+                },
+                "required": [
+                  "download_source",
+                  "project",
+                  "tag"
+                ]
+              },
+              "example": {
+                "download_source": "example",
+                "project": "leaves",
+                "tag": "1.20.1-1a2b3c4"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "删除成功"
+          },
+          "400": {
+            "description": "请求格式错误"
+          },
+          "401": {
+            "description": "未授权"
+          }
+        }
+      }
+    }
+  }
+}

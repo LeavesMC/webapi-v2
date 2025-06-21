@@ -1,0 +1,23 @@
+import router from "../../../../../router.ts";
+import { parseAndValidatePathSecs } from "../../../../../utils/requestParser.ts";
+import { getProjectName } from "../../../../../utils/projectUtils.ts";
+import { getVersionBuildsData, getVersionId } from "../../../../../utils/versionUtils.ts";
+import restUtils from "../../../../../utils/restUtils.ts";
+
+router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/?$/, async (request, response) => {
+    const secs = parseAndValidatePathSecs(request, 5);
+    const projectId = secs[2];
+    const version = secs[4];
+
+    const projectName = await getProjectName(projectId);
+    const versionId = await getVersionId(projectId, version);
+    const buildData = await getVersionBuildsData(projectId, versionId);
+    const buildIds = buildData.map(it => it.buildId);
+
+    return restUtils.$200(response, {
+        project_id: projectId,
+        project_name: projectName,
+        version: version,
+        builds: buildIds,
+    });
+});
