@@ -2,7 +2,6 @@ import { NotFound } from "./restUtils";
 import { BuildData } from "./dataTypes";
 import { toBuildData } from "./buildUtils";
 import { EXTRA_VERSION_GROUP } from "../config/extraVersionGroup";
-import { getVersionGroupIdOrCreate } from "./versionGroupUtils";
 import { db } from "./db/db";
 
 export function generateVersionGroupName(projectId: string, version: string): string {
@@ -35,25 +34,6 @@ export async function getVersionId(projectId: string, versionName: string): Prom
     const versionId = result.rows[0]?.id;
     if (!versionId) throw new NotFound("Version not found");
     return versionId;
-}
-
-export async function getVersionIdOrCreate(projectId: string, versionName: string): Promise<number> {
-    try {
-        return await getVersionId(projectId, versionName);
-    } catch (error) {
-        if (!(error instanceof NotFound)) throw error;
-        return await createVersionId(projectId, versionName);
-    }
-}
-
-async function createVersionId(projectId: string, versionName: string): Promise<number> {
-    const versionGroupName = generateVersionGroupName(projectId, versionName);
-    const versionGroupId = await getVersionGroupIdOrCreate(projectId, versionGroupName);
-    const result = await db().query(
-        "insert into versions (project, name, version_group) values ($1, $2, $3) returning id",
-        [projectId, versionName, versionGroupId],
-    );
-    return result.rows[0].id;
 }
 
 export async function getVersionName(projectId: string, versionId: number): Promise<string> {

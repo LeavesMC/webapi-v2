@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { Algorithm } from "jsonwebtoken";
+import * as process from "node:process";
 
 config();
 
@@ -15,6 +16,9 @@ const env = {
         subject: process.env.API_SUBJECT || "leaves-ci",
         algorithm: process.env.API_ALGO as Algorithm || "ES256",
     },
+    webhook: {
+        commitBuildUrl: process.env.COMMIT_BUILD_WEBHOOK_URL || undefined,
+    }
 };
 
 export default env;

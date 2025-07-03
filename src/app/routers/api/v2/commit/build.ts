@@ -2,11 +2,13 @@ import router from "../../../../router";
 import { getBodyParam } from "../../../../utils/requestParser";
 import { authentication } from "../../../../utils/authUtils";
 import { ChangeData } from "../../../../utils/dataTypes";
-import { getVersionGroupId, getVersionIdOrCreate, getVersionsLatestBuildId } from "../../../../utils/versionUtils";
+import { getVersionGroupId, getVersionId, getVersionsLatestBuildId } from "../../../../utils/versionUtils";
 import { getVersionGroupVersions } from "../../../../utils/versionGroupUtils";
 import restUtils, { BadRequest } from "../../../../utils/restUtils";
 import { insertChangesData } from "../../../../utils/changesUtils";
 import { db } from "../../../../utils/db/db";
+import { getProjectName, getProjectRepository } from "../../../../utils/projectUtils";
+import env from "../../../../utils/env";
 
 router.on("/v2/commit/build", async (request, response) => {
     const projectId = getBodyParam(request, "project_id");
@@ -21,8 +23,8 @@ router.on("/v2/commit/build", async (request, response) => {
 
     const changesData = parseChanges(rawChanges);
     const changes = await insertChangesData(projectId, changesData);
-    const versionId = await getVersionIdOrCreate(projectId, versionName);
-    const versionGroupId = await getVersionGroupId(versionId); // getVersionIdOrCreate also creates the version group if it doesn't exist
+    const versionId = await getVersionId(projectId, versionName);
+    const versionGroupId = await getVersionGroupId(versionId);
     const versions = await getVersionGroupVersions(projectId, versionGroupId);
     const latestBuildId = await getVersionsLatestBuildId(projectId, versions.ids);
     const buildId = latestBuildId + 1;
@@ -35,6 +37,8 @@ router.on("/v2/commit/build", async (request, response) => {
          values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
         [projectId, buildId, time, experimental, jarName, sha256, versionId, tag, changes, ["application"]],
     );
+
+    triggerWebhook(projectId, versionName, tag).then();
 
     return restUtils.$200(response);
 });
@@ -53,4 +57,31 @@ function parseChanges(changes: string): ChangeData[] {
                 message: (summary ?? "") + "\n",
             };
         });
+}
+
+async function triggerWebhook(projectId: string, version: string, tag: string) {
+    const commitBuildWebhookUrl = env.webhook.commitBuildUrl;
+    if (!commitBuildWebhookUrl) return;
+
+    const projectName = await getProjectName(projectId);
+    const projectRepo = await getProjectRepository(projectId);
+
+    const webhookData = {
+        project: projectName,
+        repository: projectRepo,
+        version,
+        tag,
+    };
+
+    try {
+        await fetch(commitBuildWebhookUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(webhookData),
+        });
+    } catch (error) {
+        console.error(`Failed to trigger commit build webhook ${webhookData} :`, error);
+    }
 }

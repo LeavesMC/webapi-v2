@@ -1,45 +1,50 @@
 const fs = require("fs");
-require("path");
+const path = require("path");
 const { Client } = require("pg");
 
-const client = new Client({
+// ====== 只需修改以下常量即可适配不同项目 ======
+const DB_CONFIG = {
     user: "postgres",
     password: "123456",
     host: "localhost",
     port: 5432,
     database: "postgres"
-});
+};
+const PROJECT_ID = "leaves";
+const PROJECT_NAME = "Leaves";
+const PROJECT_REPO = "https://github.com/LeavesMC/leaves";
+const JSON_DIR = ".";
+const JSON_PATTERN = /^(.+)\.json$/;
+// ===========================================
 
-async function main() {
+/**
+ * 迁移 Mongo JSON 到 Postgres
+ */
+async function migrateDbFromMongoJson() {
+    const client = new Client(DB_CONFIG);
     await client.connect();
 
-    // 1. 插入项目
-    const projectName = "Leaves";
-    const projectRepo = "https://github.com/LeavesMC/leaves";
-    const projectId = "leaves";
-    {
-        await client.query(
-                "INSERT INTO projects (id, name, repo) VALUES ($1, $2, $3) ON CONFLICT (id) DO NOTHING RETURNING id",
-                [projectId, projectName, projectRepo]
-        );
-    }
+    // 插入项目
+    await client.query(
+        "insert into projects (id, name, repo) values ($1, $2, $3) on conflict (id) do nothing returning id",
+        [PROJECT_ID, PROJECT_NAME, PROJECT_REPO]
+    );
 
-    // 2. 遍历所有 leaves.*.json 文件
-    const files = fs.readdirSync(".").filter(f => /^leaves\..+\.json$/.test(f));
+    // 遍历所有 JSON 文件
+    const files = fs.readdirSync(JSON_DIR).filter(f => JSON_PATTERN.test(f));
     for (const file of files) {
-        const versionGroupName = file.match(/^leaves\.(.+)\.json$/)[1];
+        const versionGroupName = file.match(JSON_PATTERN)[1];
 
         // 插入版本组
         const vgRes = await client.query(
-                "INSERT INTO version_groups (project, name) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING id",
-                [projectId, versionGroupName]
+            "insert into version_groups (project, name) values ($1, $2) on conflict do nothing returning id",
+            [PROJECT_ID, versionGroupName]
         );
-        // 兼容已存在
         const vgId = vgRes.rows[0]?.id ||
-                (await client.query("SELECT id FROM version_groups WHERE project=$1 AND name=$2", [projectId, versionGroupName])).rows[0].id;
+            (await client.query("select id from version_groups where project=$1 and name=$2", [PROJECT_ID, versionGroupName])).rows[0].id;
 
         // 读取 JSON
-        const builds = JSON.parse(fs.readFileSync(file, "utf8"));
+        const builds = JSON.parse(fs.readFileSync(path.join(JSON_DIR, file), "utf8"));
 
         // 按 version 分组
         const versionMap = {};
@@ -50,13 +55,13 @@ async function main() {
 
         // 插入每个 version
         const versionNameToId = {};
-        for (const [versionName, _] of Object.entries(versionMap)) {
+        for (const versionName of Object.keys(versionMap)) {
             const vRes = await client.query(
-                    "INSERT INTO versions (name, project, version_group) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING id",
-                    [versionName, projectId, vgId]
+                "insert into versions (name, project, version_group) values ($1, $2, $3) on conflict do nothing returning id",
+                [versionName, PROJECT_ID, vgId]
             );
             versionNameToId[versionName] = vRes.rows[0]?.id ||
-                    (await client.query("SELECT id FROM versions WHERE name=$1 AND project=$2 AND version_group=$3", [versionName, projectId, vgId])).rows[0].id;
+                (await client.query("select id from versions where name=$1 and project=$2 and version_group=$3", [versionName, PROJECT_ID, vgId])).rows[0].id;
         }
 
         // 插入 changes，建立 commit->id 映射
@@ -65,11 +70,11 @@ async function main() {
             for (const change of build.changes) {
                 if (!commitToId[change.commit]) {
                     const res = await client.query(
-                            "INSERT INTO changes (project, commit, summary, message) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id",
-                            [projectId, change.commit, change.summary, change.message]
+                        "insert into changes (project, commit, summary, message) values ($1, $2, $3, $4) on conflict do nothing returning id",
+                        [PROJECT_ID, change.commit, change.summary, change.message]
                     );
                     commitToId[change.commit] = res.rows[0]?.id ||
-                            (await client.query("SELECT id FROM changes WHERE project=$1 AND commit=$2", [projectId, change.commit])).rows[0].id;
+                        (await client.query("select id from changes where project=$1 and commit=$2", [PROJECT_ID, change.commit])).rows[0].id;
                 }
             }
         }
@@ -79,31 +84,31 @@ async function main() {
             const changeIds = build.changes.map(c => commitToId[c.commit]);
             const experimental = build.channel === "experimental";
             await client.query(
-                    `INSERT INTO builds
-                     (project, build_id, time, experimental, jar_name, sha256, version, tag, changes, download_sources)
-                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-                     ON CONFLICT DO NOTHING`,
-                    [
-                        projectId,
-                        build.build_id,
-                        build.time,
-                        experimental,
-                        build.jar_name,
-                        build.sha256,
-                        versionNameToId[build.version],
-                        build.tag,
-                        changeIds,
-                        ["github"]
-                    ]
+                `insert into builds
+                 (project, build_id, time, experimental, jar_name, sha256, version, tag, changes, download_sources)
+                 values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                 on conflict do nothing`,
+                [
+                    PROJECT_ID,
+                    build.build_id,
+                    build.time,
+                    experimental,
+                    build.jar_name,
+                    build.sha256,
+                    versionNameToId[build.version],
+                    build.tag,
+                    changeIds,
+                    ["github"]
+                ]
             );
         }
     }
 
     await client.end();
-    console.log("所有版本组迁移完成");
+    console.log(`[${PROJECT_ID}] 所有版本组迁移完成`);
 }
 
-main().catch(e => {
+migrateDbFromMongoJson().catch(e => {
     console.error(e);
-    client.end().then();
+    process.exit(1);
 });
