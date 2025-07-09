@@ -4,7 +4,7 @@ import env from "./env";
 import { BadRequest, Unauthorized } from "./restUtils";
 
 export function authentication(request: RequestContext, audience: string) {
-    const token = request.headers["authentication"];
+    const token = request.headers["authentication"] || request.headers["Authorization"];
     if (typeof token !== "string") throw new BadRequest("Authentication header is not a string");
     const prefix = "Bearer ";
     const lowerPrefix = "bearer ";
