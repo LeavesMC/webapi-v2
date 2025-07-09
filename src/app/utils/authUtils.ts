@@ -4,11 +4,11 @@ import env from "./env";
 import { BadRequest, Unauthorized } from "./restUtils";
 
 export function authentication(request: RequestContext, audience: string) {
-    const token = request.headers["authentication"] || request.headers["Authorization"];
-    if (typeof token !== "string") throw new BadRequest("Authentication header is not a string");
+    const token = request.headers["authorization"] || request.headers["Authorization"];
+    if (typeof token !== "string") throw new BadRequest("Authorization header is not a string");
     const prefix = "Bearer ";
     const lowerPrefix = "bearer ";
-    if (!token.startsWith(prefix) && !token.startsWith(lowerPrefix)) throw new BadRequest("Authentication header does not start with Bearer");
+    if (!token.startsWith(prefix) && !token.startsWith(lowerPrefix)) throw new BadRequest("Authorization header does not start with Bearer");
     const rawToken = token.substring(prefix.length);
     verifyToken(rawToken, audience);
 }
