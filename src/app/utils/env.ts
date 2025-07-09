@@ -5,6 +5,7 @@ import * as process from "node:process";
 config();
 
 const env = {
+    port: parseInt(process.env.PORT || "32767", 10),
     db: {
         url: process.env.DB_URL!!,
     },
