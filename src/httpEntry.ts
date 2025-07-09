@@ -6,7 +6,7 @@ const server = http.createServer();
 
 server.on("request", app.httpHandler());
 
-server.listen(env.port, () => {
+server.listen(env.port, "0.0.0.0", () => {
     console.log("LeavesMC WebAPI serve (Powered by VCLight)");
-    console.log(`> Ready! Available at http://localhost:${env.port}`);
+    console.log(`> Ready! Available at http://0.0.0.0:${env.port}`);
 });
