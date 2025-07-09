@@ -6,6 +6,7 @@ config();
 
 const env = {
     port: parseInt(process.env.PORT || "32767", 10),
+    host: process.env.HOST || "localhost",
     db: {
         url: process.env.DB_URL!!,
     },
