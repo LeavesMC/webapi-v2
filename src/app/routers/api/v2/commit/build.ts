@@ -7,7 +7,7 @@ import { getVersionGroupVersions } from "../../../../utils/versionGroupUtils";
 import restUtils, { BadRequest } from "../../../../utils/restUtils";
 import { insertChangesData } from "../../../../utils/changesUtils";
 import { db } from "../../../../utils/db/db";
-import { getProjectName, getProjectRepository } from "../../../../utils/projectUtils";
+import { getProjectRepository } from "../../../../utils/projectUtils";
 import env from "../../../../utils/env";
 
 router.on("/v2/commit/build", async (request, response) => {
@@ -63,11 +63,10 @@ async function triggerWebhook(projectId: string, version: string, tag: string) {
     const commitBuildWebhookUrl = env.webhook.commitBuildUrl;
     if (!commitBuildWebhookUrl) return;
 
-    const projectName = await getProjectName(projectId);
     const projectRepo = await getProjectRepository(projectId);
 
     const webhookData = {
-        project: projectName,
+        project: projectId,
         repository: projectRepo,
         version,
         tag,
