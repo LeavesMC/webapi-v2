@@ -35,7 +35,7 @@ async function updateDownload(projectId: string, tag: string, downloadSource: st
 async function insertDownload(projectId: string, tag: string, downloadSource: string, url: string): Promise<void> {
     await db().query(
         `insert into downloads (project, tag, download_source, url)
-         values ($1, $2, $2, $3)`,
+         values ($1, $2, $3, $4)`,
         [projectId, tag, downloadSource, url],
     );
 }
