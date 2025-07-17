@@ -2,12 +2,10 @@ import { BuildData, DownloadData } from "./dataTypes";
 import { getProjectRepository } from "./projectUtils";
 import { getVersionName } from "./versionUtils";
 import { db } from "./db/db";
-import { NotFound } from "./restUtils";
 
 export async function getDownloadData(downloadSource: string, buildData: BuildData): Promise<DownloadData> {
     switch (downloadSource) {
         case "github":
-            return await getApplicationDownloadData(buildData);
         case "application":
             return await getApplicationDownloadData(buildData);
         default:
@@ -21,7 +19,8 @@ async function getDbDownloadData(downloadSource: string, buildData: BuildData): 
         [buildData.projectId, buildData.tag, downloadSource],
     );
     if (result.rows.length === 0) {
-        throw new NotFound(`Download data not found for project ${buildData.projectId}, tag ${buildData.tag}, source ${downloadSource}`);
+        return await getApplicationDownloadData(buildData); // temp fix
+        // throw new NotFound(`Download data not found for project ${buildData.projectId}, tag ${buildData.tag}, source ${downloadSource}`);
     }
     return {
         name: downloadSource,
