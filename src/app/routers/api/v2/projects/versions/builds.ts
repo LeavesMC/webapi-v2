@@ -13,7 +13,8 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/?$/, async (r
     const projectName = await getProjectName(projectId);
     const versionId = await getVersionId(projectId, version);
     const buildData = await getVersionBuildsData(projectId, versionId);
-    const builds = await Promise.all(buildData.map(it => toBuild(it)));
+    const builds = (await Promise.all(buildData.map(it => toBuild(it))))
+        .sort((a, b) => b.build - a.build);
 
     return restUtils.$200(response, {
         project_id: projectId,
