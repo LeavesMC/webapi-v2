@@ -14,7 +14,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/?$/, async (request, 
     const buildData = await getVersionBuildsData(projectId, versionId);
     const buildIds = buildData
         .map(it => it.buildId)
-        .sort((a, b) => b - a);
+        .sort((a, b) => a - b);
 
     return restUtils.$200(response, {
         project_id: projectId,

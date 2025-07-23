@@ -16,7 +16,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/version_group\/[^\/]+\/builds\/?$/, asy
     const versions = await getVersionGroupVersions(projectId, versionGroupId);
     const buildsData = await getVersionsBuildsData(projectId, versions.ids);
     const builds = (await Promise.all(buildsData.map(it => toBuild(it))))
-        .sort((a, b) => b.build - a.build);
+        .sort((a, b) => a.build - b.build);
 
     return restUtils.$200(response, {
         project_id: projectId,
