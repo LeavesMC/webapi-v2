@@ -8,10 +8,10 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/builds\/[^\/]+\/downl
     const secs = parseAndValidatePathSecs(request, 9);
     const projectId = secs[2];
     const versionName = secs[4];
-    const buildId = parseBuildId(secs[6]);
     const downloadSource = secs[8];
 
     const versionId = await getVersionId(projectId, versionName);
+    const buildId = await parseBuildId(projectId, versionId, secs[6]);
     const buildData = await getBuildData(projectId, versionId, buildId);
     const downloadData = await getDownloadData(downloadSource, buildData);
 

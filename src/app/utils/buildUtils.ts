@@ -3,6 +3,7 @@ import { BuildData } from "./dataTypes";
 import { NotFound } from "./restUtils";
 import { getDownloadData } from "./downloadUtils";
 import { db } from "./db/db";
+import { getVersionsLatestBuildId } from "./versionUtils";
 
 export function toBuildData(row: any): BuildData {
     return {
@@ -55,7 +56,8 @@ export async function getBuildDownloads(buildData: BuildData) {
     return downloads;
 }
 
-export function parseBuildId(raw: string): number {
+export async function parseBuildId(projectId: string, versionId: number, raw: string): Promise<number> {
+    if (raw === "latest") return await getVersionsLatestBuildId(projectId, [versionId]);
     const buildId = Number(raw);
     if (isNaN(buildId)) throw new NotFound(`Invalid build id ${raw}`);
     return buildId;
