@@ -16,7 +16,7 @@ export function parseAndValidatePathSecs(request: RequestContext, size: number):
 }
 
 export function getBodyParam(request: RequestContext, key: string): string {
-    if (request.body === undefined) throw new BadRequest("Request body is missing");
+    if (!request.body) throw new BadRequest("Request body is missing");
     if (!(key in request.body)) throw new BadRequest(`Missing required body parameter: ${key}`);
     return request.body[key];
 }
