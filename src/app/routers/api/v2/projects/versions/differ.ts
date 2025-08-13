@@ -29,6 +29,9 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/differ\/[^\/]+\/?$/, 
         "select build_id from builds where version = $1 and changes @> $2",
         [versionId, [changeId]],
     );
+    if (!referredBuildIdResult.rowCount || referredBuildIdResult.rowCount === 0) {
+        throw new NotFound(`No build found for version ${versionName} with change ${changeId}`);
+    }
     const referredBuildId = referredBuildIdResult.rows[0].build_id;
 
     response.contentType = "text/plain";
