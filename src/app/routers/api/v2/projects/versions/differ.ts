@@ -1,6 +1,6 @@
 import router from "../../../../../router";
 import { parseAndValidatePathSecs } from "../../../../../utils/requestParser";
-import { getVersionId, getVersionsLatestBuildId } from "../../../../../utils/versionUtils";
+import { getVersionId } from "../../../../../utils/versionUtils";
 import { NotFound } from "../../../../../utils/restUtils";
 import { db } from "../../../../../utils/db/db";
 
@@ -10,9 +10,7 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/differ\/[^\/]+\/?$/, 
     const versionName = secs[4];
     const versionRef = secs[6];
 
-
     const versionId = await getVersionId(projectId, versionName);
-    const latestVersionBuildId = await getVersionsLatestBuildId(projectId, [versionId]);
 
     const changesResult = await db().query(
         "select id from changes where project = $1 and commit like $2",
@@ -34,7 +32,13 @@ router.pattern(/^\/v2\/projects\/[^\/]+\/versions\/[^\/]+\/differ\/[^\/]+\/?$/, 
     }
     const referredBuildId = referredBuildIdResult.rows[0].build_id;
 
+    const laterBuildsCountResult = await db().query(
+        "select count(*) from builds where version = $1 and build_id > $2",
+        [versionId, referredBuildId]
+    );
+    const differ = parseInt(laterBuildsCountResult.rows[0].count, 10);
+
     response.contentType = "text/plain";
     response.status = 200;
-    response.response = latestVersionBuildId - referredBuildId;
+    response.response = differ;
 });
